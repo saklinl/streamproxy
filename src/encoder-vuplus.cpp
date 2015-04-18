@@ -75,7 +75,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 	// requests are sent from a single http client, resulting in multiple
 	// streamproxy threads, all of them having the encoder open
 	// for a short while
-
+/*
 	if(stb_traits.encoders > 0)
 	{
 		for(attempt = 0; attempt < 32; attempt++)
@@ -109,6 +109,29 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 			usleep(100000);
 		}
 	}
+	*/
+	if((stb_traits.encoders > 0) && (encoder < 0))
+		{
+			int enc=0;
+			for(enc=0;enc<stb_traits.encoders;enc++)
+			{
+				for(attempt = 0; attempt < 32; attempt++)
+				{
+					string filename="";
+					filename = string("/dev/bcm_enc") + Util::int_to_string(enc);
+					if((fd = open(filename.c_str(), O_RDWR, 0)) >= 0)
+					{
+						encoder = enc;
+						Util::vlog("EncoderVuPlus: bcm_enc%d open",enc);
+						break;
+					}
+
+					Util::vlog("EncoderVuPlus: waiting for encoder %d to become available, attempt %d", enc,attempt);
+
+					usleep(100000);
+				}
+			}
+		}
 
 	if(encoder < 0)
 		throw(trap("no encoders available"));
