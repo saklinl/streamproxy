@@ -143,7 +143,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 		errno = 0;
 		Util::vlog("Encoder: open encoder %s", encoder_device);
 
-		if((fd = open(encoder_device.c_str(), O_RDWR, 0)) < 0)
+		if((fd = open(encoder_device, O_RDWR, 0)) < 0)
 		{
 			if(errno == ENOENT)
 			{
