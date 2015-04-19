@@ -135,7 +135,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 			}
 		}
 */
-	if((stb_traits.encoders > 0) && (encoder < 0))
+	if(stb_traits.encoders > 0)
 	{
 		for(encoder = 0; encoder < 8; encoder++)
 	{
