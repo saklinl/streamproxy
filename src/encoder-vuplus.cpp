@@ -139,17 +139,17 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 	{
 		snprintf(encoder_device, sizeof(encoder_device), "/dev/bcm_enc%d", encoder);
 		errno = 0;
-		vlog("Encoder: open encoder %s", encoder_device);
+		Util::vlog("Encoder: open encoder %s", encoder_device);
 
 		if((fd = open(encoder_device.c_str(), O_RDWR, 0)) < 0)
 		{
 			if(errno == ENOENT)
 			{
-				vlog("Encoder: not found %s", encoder_device);
+				Util::vlog("Encoder: not found %s", encoder_device);
 				break;
 			}
 
-			vlog("Encoder: encoder %d is busy", encoder);
+			Util::vlog("Encoder: encoder %d is busy", encoder);
 		}
 		else
 			break;
