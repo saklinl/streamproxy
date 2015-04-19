@@ -110,7 +110,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 		}
 	}
 	*/
-	if((stb_traits.encoders > 0) && (encoder < 0))
+/*	if((stb_traits.encoders > 0) && (encoder < 0))
 		{
 			int enc=0;
 			for(enc=0;enc<stb_traits.encoders;enc++)
@@ -119,7 +119,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 				{
 					string filename="";
 					filename = string("/dev/bcm_enc") + Util::int_to_string(enc);
-					if((fd = open(filename.c_str(), O_RDWR, 0)) >= 0)
+					if(fd = open(filename.c_str(), O_RDWR))
 					{
 						encoder = enc;
 						Util::vlog("EncoderVuPlus: bcm_enc%d open",enc);
@@ -132,7 +132,29 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 				}
 			}
 		}
+*/
+	if((stb_traits.encoders > 0) && (encoder < 0))
+	{
+		for(encoder = 0; encoder < 8; encoder++)
+	{
+		snprintf(encoder_device, sizeof(encoder_device), "/dev/bcm_enc%d", encoder);
+		errno = 0;
+		vlog("Encoder: open encoder %s", encoder_device);
 
+		if((fd = open(encoder_device.c_str(), O_RDWR, 0)) < 0)
+		{
+			if(errno == ENOENT)
+			{
+				vlog("Encoder: not found %s", encoder_device);
+				break;
+			}
+
+			vlog("Encoder: encoder %d is busy", encoder);
+		}
+		else
+			break;
+	}
+}
 	if(encoder < 0)
 		throw(trap("no encoders available"));
 
