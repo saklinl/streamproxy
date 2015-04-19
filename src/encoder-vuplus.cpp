@@ -34,7 +34,9 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 	int						attempt;
 
 	fd						= -1;
-	encoder					= -1;
+	static char	encoder_device[128];
+			int	encoder;
+//	encoder					= -1;
 	start_thread_running	= false;
 	start_thread_joined		= true;
 	stopped					= false;
