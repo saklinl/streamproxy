@@ -31,7 +31,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 	string					value;
 	int						int_value;
 	int						pmt = -1, video = -1, audio = -1;
-	int						attempt;
+//	int						attempt;
 
 	fd						= -1;
 	static char	encoder_device[128];
