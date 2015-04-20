@@ -425,7 +425,7 @@ string EncoderVuPlus::getprop(string property) const throw()
 	string	path;
 	char	tmp[256];
 
-	path = string("/proc/stb/encoder/") + Util::int_to_string(encoder) + "/" + property;
+	path = string("/proc/stb/bahoencoder/") + Util::int_to_string(encoder) + "/" + property;
 
 	if((procfd = open(path.c_str(), O_RDONLY, 0)) < 0)
 	{
@@ -453,7 +453,7 @@ void EncoderVuPlus::setprop(const string &property, const string &value) const t
 
 	Util::vlog("setprop: %s=%s", property.c_str(), value.c_str());
 
-	path = string("/proc/stb/encoder/") + Util::int_to_string(encoder) + "/" + property;
+	path = string("/proc/stb/bahoencoder/") + Util::int_to_string(encoder) + "/" + property;
 
 	if((procfd = open(path.c_str(), O_WRONLY, 0)) < 0)
 	{
