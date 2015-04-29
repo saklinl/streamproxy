@@ -501,15 +501,15 @@ const stbs_traits_t stbs_traits =
 			.manufacturer		= "Mut@nt",
 			.model				= "hd2400",
 			.chipset			= "bcm7424",
-			.transcoding_type	= stb_transcoding_vuplus,
-			.encoders			= 16,
+			.transcoding_type	= stb_transcoding_enigma,
+			.encoders			= 20,
 			.num_id				= 2,
 			.id					=
 			{
 				{ "/proc/stb/info/model", "dm800se" },
 				{ "/proc/stb/info/boxtype", "hd2400" },
 			},
-			.num_features		= 8,
+			.num_features		= 4,
 			.features			= features_hd2400,
 		},
 		{
