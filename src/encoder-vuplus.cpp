@@ -31,11 +31,9 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 	string					value;
 	int						int_value;
 	int						pmt = -1, video = -1, audio = -1;
-//	int						attempt;
+	int						attempt;
 
 	fd						= -1;
-	static char	encoder_device[128];
-//			int	encoder;
 	encoder					= -1;
 	start_thread_running	= false;
 	start_thread_joined		= true;
@@ -112,7 +110,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 		}
 	}
 	*/
-/*	if((stb_traits.encoders > 0) && (encoder < 0))
+	if((stb_traits.encoders > 0) && (encoder < 0))
 		{
 			int enc=0;
 			for(enc=0;enc<stb_traits.encoders;enc++)
@@ -121,7 +119,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 				{
 					string filename="";
 					filename = string("/dev/bcm_enc") + Util::int_to_string(enc);
-					if(fd = open(filename.c_str(), O_RDWR))
+					if((fd = open(filename.c_str(), O_RDWR, 0)) >= 0)
 					{
 						encoder = enc;
 						Util::vlog("EncoderVuPlus: bcm_enc%d open",enc);
@@ -134,29 +132,7 @@ EncoderVuPlus::EncoderVuPlus(const PidMap &pids_in,
 				}
 			}
 		}
-*/
-	if(stb_traits.encoders > 0)
-	{
-		for(encoder = 0; encoder < 8; encoder++)
-	{
-		snprintf(encoder_device, sizeof(encoder_device), "/dev/bcm_enc%d", encoder);
-		errno = 0;
-		Util::vlog("Encoder: open encoder %s", encoder_device);
 
-		if((fd = open(encoder_device, O_RDWR, 0)) < 0)
-		{
-			if(errno == ENOENT)
-			{
-				Util::vlog("Encoder: not found %s", encoder_device);
-				break;
-			}
-
-			Util::vlog("Encoder: encoder %d is busy", encoder);
-		}
-		else
-			break;
-	}
-}
 	if(encoder < 0)
 		throw(trap("no encoders available"));
 
@@ -425,7 +401,7 @@ string EncoderVuPlus::getprop(string property) const throw()
 	string	path;
 	char	tmp[256];
 
-	path = string("/proc/stb/bahoencoder/") + Util::int_to_string(encoder) + "/" + property;
+	path = string("/proc/stb/encoder/") + Util::int_to_string(encoder) + "/" + property;
 
 	if((procfd = open(path.c_str(), O_RDONLY, 0)) < 0)
 	{
@@ -453,7 +429,7 @@ void EncoderVuPlus::setprop(const string &property, const string &value) const t
 
 	Util::vlog("setprop: %s=%s", property.c_str(), value.c_str());
 
-	path = string("/proc/stb/bahoencoder/") + Util::int_to_string(encoder) + "/" + property;
+	path = string("/proc/stb/encoder/") + Util::int_to_string(encoder) + "/" + property;
 
 	if((procfd = open(path.c_str(), O_WRONLY, 0)) < 0)
 	{
